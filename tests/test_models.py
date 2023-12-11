@@ -2,6 +2,7 @@
 
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 
 def test_daily_mean_zeros():
@@ -40,6 +41,7 @@ def test_daily_min_zeroes():
 
     npt.assert_array_equal(daily_min(test_input), test_result)
 
+
 def test_daily_min_ints():
     """Test that min  function works for an array of integers."""
     from inflammation.models import daily_min
@@ -50,8 +52,21 @@ def test_daily_min_ints():
 
     npt.assert_array_equal(daily_min(test_input), test_result)
 
-import pytest
+
+@pytest.mark.parametrize(
+    "test, expected",
+    [
+        ([[0, 0], [0, 0], [0, 0]], [0, 0]),
+        ([[1, 6], [5, 8], [6, 10]], [1, 6]),
+    ])
+def test_daily_min(test, expected):
+    from inflammation.models import daily_min
+    npt.assert_array_equal(daily_min(np.array(test)), np.array(expected))
+
+
 ...
+
+
 def test_daily_min_string():
     """Test for TypeError when passing strings"""
     from inflammation.models import daily_min
